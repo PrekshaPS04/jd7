@@ -4,17 +4,32 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                echo 'Building..'
+                git branch : 'main',url : 'https://github.com/PrekshaPS04/jd7.git'
             }
         }
-        stage('Test') {
+        stage('Install') {
             steps {
-                echo 'Testing..'
+                bat 'npm install'
             }
         }
-        stage('Deploy') {
+        stage('Run App') {
             steps {
-                echo 'Deploying....'
+                bat 'node app.js'
+            }
+        }
+        stage('test') {
+            steps {
+                bat 'node test.js'
+            }
+        }
+        stage('Build iamge') {
+            steps {
+                bat 'docker build -t home7 .'
+            }
+        }
+        stage('Run Container') {
+            steps {
+                bat 'docker run -d -p 3000:3000 --name home7container home7'
             }
         }
     }
